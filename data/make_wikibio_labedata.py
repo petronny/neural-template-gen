@@ -2,7 +2,7 @@ import os
 import sys
 import torch
 
-from utils import get_wikibio_fields
+from .utils import get_wikibio_fields
 
 train_dir = "wikipedia-biography-dataset/train"
 val_dir = "wikipedia-biography-dataset/valid"
@@ -69,8 +69,8 @@ def stupid_search(tokes, fields):
     PFL = 4
     labels = []
     i = len(tokes)
-    wordsets = [set(toke for toke in v if toke not in punctuation) for k, v in fields.iteritems()]
-    pfxsets = [set(toke[:PFL] for toke in v if toke not in punctuation) for k, v in fields.iteritems()]
+    wordsets = [set(toke for toke in v if toke not in punctuation) for k, v in fields.items()]
+    pfxsets = [set(toke[:PFL] for toke in v if toke not in punctuation) for k, v in fields.items()]
     while i > 0:
         matched = False
         if tokes[i-1] in punctuation:
@@ -80,7 +80,7 @@ def stupid_search(tokes, fields):
         if tokes[i-1] in punctuation or tokes[i-1] in prepositions or tokes[i-1] in splitters:
             i -= 1
             continue
-        for j in xrange(i):
+        for j in range(i):
             if tokes[j] in punctuation or tokes[j] in prepositions or tokes[j] in splitters:
                 continue
             # then check if it matches stuff in the table
@@ -137,7 +137,7 @@ def print_data(direc):
                 tgtlines.append(tgtline)
 
     assert len(srclines) == len(tgtlines)
-    for i in xrange(len(srclines)):
+    for i in range(len(srclines)):
         fields = get_wikibio_fields(srclines[i].strip().split())
         tgttokes = tgtlines[i].strip().split()
         labels = stupid_search(tgttokes, fields)
@@ -150,7 +150,7 @@ def print_data(direc):
         sentstr = " ".join(tgttokes)
 
         outline = "%s|||%s" % (sentstr, labelstr)
-        print outline
+        print(outline)
 
 if __name__ == "__main__":
     max_phrs_len = int(sys.argv[2])

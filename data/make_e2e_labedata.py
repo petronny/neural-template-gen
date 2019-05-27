@@ -1,7 +1,7 @@
 import os
 import sys
 
-from utils import get_e2e_fields, e2e_key2idx
+from .utils import get_e2e_fields, e2e_key2idx
 
 e2e_train_src = "trainset-source.tok"
 e2e_train_tgt = "trainset-target.tok"
@@ -25,7 +25,7 @@ def stupid_search(tokes, fields):
     i = 0
     while i < len(tokes):
         matched = False
-        for j in xrange(len(tokes), i, -1):
+        for j in range(len(tokes), i, -1):
             # first check if it's punctuation
             if all(toke in punctuation for toke in tokes[i:j]):
                 labels.append((i, j, len(e2e_key2idx))) # first label after rul labels
@@ -33,7 +33,7 @@ def stupid_search(tokes, fields):
                 matched = True
                 break
             # then check if it matches stuff in the table
-            for k, v in fields.iteritems():
+            for k, v in fields.items():
                 # take an uncased match
                 if " ".join(tokes[i:j]).lower() == " ".join(v).lower():
                     labels.append((i, j, e2e_key2idx[k]))
@@ -65,7 +65,7 @@ def print_data(srcfi, tgtfi):
                 sentstr = " ".join(senttokes)
 
                 outline = "%s|||%s" % (sentstr, labelstr)
-                print outline
+                print(outline)
 
 
 if sys.argv[1] == "train":
